@@ -9,6 +9,7 @@ var connection = mysql.createConnection({
 });
 
 prompt.start();
+prompt.message = "";
 
 var zoo = {
   welcome: function(){
@@ -22,6 +23,18 @@ var zoo = {
     console.log('Enter (Q): -----> to Quit and exit the Zoo!');
   },
   add: function(input_scope){
-    
+    var currentScope = input_scope;
+    console.log("To add an animal to the zoo please fill out the following form for us!");
+
+    prompt.get([name, type, age], function(err, result){
+      var query = 'INSERT INTO animals (name, type, age) VALUES (?,?,?);';
+      var addAnimal = [result.name, result.type, result.age];
+
+      connection.query(query, addAnimal, function(err,res){
+        if(err){ throw err; }
+        console.log();
+      });
+
+    })
   }
-}
+};
